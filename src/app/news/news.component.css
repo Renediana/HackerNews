@@ -1,4 +1,8 @@
+.container {
+    margin: 25px 25px;
+}
 .card {
+    border: 1px solid #242424;
     height: 150px;
     margin-bottom: 20px;
 }
@@ -12,3 +16,24 @@ span {
     flex-direction: column;
     justify-content: space-between;
 }
+
+h5 {
+    font-weight: 600;
+}
+
+span {
+    background-color: #242424;
+    color: aliceblue;
+    padding: 9px 4px 11px 4px;
+    border-radius: 2px;
+}
+
+a {
+    border: 1px solid #242424;
+}
+
+a:hover {
+    background-color: #242424;;
+    color: aliceblue;
+}
+

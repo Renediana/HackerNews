@@ -8,10 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NewsComponent implements OnInit {
 
-  stories = this.newsService.getStories();
+  stories = this.newsService.getVotes();
 
   constructor(private newsService: NewsService) { }
-
+  upVote(id:string){
+    this.newsService.upVote(id);
+  }
   ngOnInit(): void {
   }
 }

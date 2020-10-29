@@ -9,3 +9,7 @@ export interface Story {
     type: string,
     url: string
 }
+
+export interface VotedStory extends Story {
+    vote: number
+}
