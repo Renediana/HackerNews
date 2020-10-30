@@ -50,9 +50,19 @@ button:hover {
     color: aliceblue;
 }
 
-button:disabled {
+.isVoted {
     background-color: darkcyan;
     color: white;
     border-color: black;
     opacity: 100%;
+}
+
+.buttons {
+    margin: 4px, 4px; 
+    padding: 4px; 
+    width: 300px; 
+    overflow-x: auto; 
+    overflow-y: hidden; 
+    white-space: nowrap;
+    margin: 0 auto;
 }

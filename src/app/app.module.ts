@@ -15,9 +15,10 @@ import { RouterModule } from '@angular/router';
     BrowserModule,
     HttpClientModule,
     RouterModule.forRoot([
+      { path: '', redirectTo: 'page/1', pathMatch: 'full'},
       {
         path: 'page/:id',
-        component: AppComponent
+        component: NewsComponent
     }
   ])
   ],

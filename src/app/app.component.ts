@@ -7,15 +7,12 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit{
+export class AppComponent{
   title = 'Hacker News';
   pages = this.newsService.pages;
 
   constructor(
-    private newsService: NewsService,
-    private route: ActivatedRoute
+    private newsService: NewsService
     ) {}
-  ngOnInit(): void {
-    this.route.params.subscribe(params => this.newsService.setPage(params.id-1));
-  }
+
 }

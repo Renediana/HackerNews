@@ -8,13 +8,3 @@ h1 {
     top: 0;
     z-index: 100;
 }
-
-.buttons {
-    margin: 4px, 4px; 
-    padding: 4px; 
-    width: 300px; 
-    overflow-x: auto; 
-    overflow-y: hidden; 
-    white-space: nowrap;
-    margin: 0 auto;
-}

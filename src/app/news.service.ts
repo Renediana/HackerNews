@@ -52,14 +52,14 @@ export class NewsService {
   upVote(id: string) {
     const v = this.votes.value;
     const x = v[id];
-    v[id] = 1;
+    v[id] = x === 1 ? undefined : 1;
     this.votes.next(v);
   }
 
   downVote(id: string) {
     const v = this.votes.value;
     const x = v[id];
-    v[id] = -1;
+    v[id] = x === -1 ? undefined : -1;
     this.votes.next(v);
   }
 
