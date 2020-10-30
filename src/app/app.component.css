@@ -3,4 +3,8 @@ h1 {
     color: white;
     background-color: #242424;
     padding: 10px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
 }

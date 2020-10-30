@@ -1,5 +1,6 @@
 .container {
-    margin: 25px 25px;
+    margin: 100px 25px;
+    margin-left: 4vw;
 }
 .card {
     border: 1px solid #242424;
@@ -24,12 +25,13 @@ span {
 }
 
 #article-title:hover {
+    padding-left: 5px;
+    padding-right: 5px;
     color: aliceblue;
     border-radius: 2px;
     text-decoration: none;
     background-color: #242424;
 }
-
 
 span {
     background-color: #242424;
@@ -49,7 +51,7 @@ button:hover {
 }
 
 button:disabled {
-    background-color: blue;
+    background-color: darkcyan;
     color: white;
     border-color: black;
     opacity: 100%;

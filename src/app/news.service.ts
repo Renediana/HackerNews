@@ -24,7 +24,7 @@ export class NewsService {
       mergeMap((q) =>
         forkJoin(
           ...q
-            .slice(0, 10)
+            .slice(0, 20)
             .map((i) =>
               this.http.get<Story>(
                 this.ROOT_URL + `item/${i}.json?print=pretty`
