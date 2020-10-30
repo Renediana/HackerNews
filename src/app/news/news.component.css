@@ -17,18 +17,27 @@ span {
     justify-content: space-between;
 }
 
-h5 {
+#article-title {
+    color: #242424;
     font-weight: 600;
+    text-decoration: underline;
 }
+
+#article-title:hover {
+    color: aliceblue;
+    border-radius: 2px;
+    text-decoration: none;
+}
+
 
 span {
     background-color: #242424;
     color: aliceblue;
     padding: 9px 4px 11px 4px;
-    border-radius: 2px;
+    border-radius: 3px;
 }
 
-a {
+div > a {
     border: 1px solid #242424;
 }
 
@@ -36,4 +45,3 @@ a:hover {
     background-color: #242424;;
     color: aliceblue;
 }
-

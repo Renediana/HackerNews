@@ -27,11 +27,20 @@ export class NewsService {
       ))
     )
   }
+  getScore(stories) {
+    stories.subscribe( ss => this.votes.next( ss.reduce( (current,sum) => ({ ...sum, [current.id] : current.score }) , {} ) ) );
+  }
 
   upVote(id: string) {
     const v = this.votes.value;
     const x = v[id];
     v[id] = x != undefined ? x+1 : 1;
+    this.votes.next(v);
+  }
+  downVote(id: string) {
+    const v = this.votes.value;
+    const x = v[id];
+    v[id] = x != undefined ? x-1 : 1;
     this.votes.next(v);
   }
 
