@@ -1,2 +1,5 @@
 <h1>{{title}}</h1>
 <app-news></app-news>
+<div class="buttons">
+<button class="btn btn-outline-dark" *ngFor="let page of pages | async " [routerLink]="['page/' , (page+1)]">{{page+1}}</button>
+</div>
