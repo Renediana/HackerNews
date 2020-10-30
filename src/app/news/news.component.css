@@ -27,6 +27,7 @@ span {
     color: aliceblue;
     border-radius: 2px;
     text-decoration: none;
+    background-color: #242424;
 }
 
 
@@ -37,11 +38,19 @@ span {
     border-radius: 3px;
 }
 
-div > a {
+button {
     border: 1px solid #242424;
+    margin-right: 0;
 }
 
-a:hover {
-    background-color: #242424;;
+button:hover {
+    background-color: grey;;
     color: aliceblue;
+}
+
+button:disabled {
+    background-color: blue;
+    color: white;
+    border-color: black;
+    opacity: 100%;
 }

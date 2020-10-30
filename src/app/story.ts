@@ -11,5 +11,7 @@ export interface Story {
 }
 
 export interface VotedStory extends Story {
-    vote: number
+    vote: number,
+    isUpVoted: boolean,
+    isDownVoted: boolean
 }
