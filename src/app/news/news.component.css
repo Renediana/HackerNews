@@ -1,6 +1,7 @@
-.container {
+.container-fluid {
     margin: 100px 25px;
-    margin-left: 4vw;
+    padding-left: 4vw;
+    padding-right: 4vw;
 }
 .card {
     border: 1px solid #242424;
