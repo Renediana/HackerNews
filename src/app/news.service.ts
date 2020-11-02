@@ -15,16 +15,17 @@ export class NewsService {
   readonly ROOT_URL = "https://hacker-news.firebaseio.com/v0/";
 
   stories = new ReplaySubject<Story[]>();
-  ids = new ReplaySubject<number[]> ();
-  page = new BehaviorSubject<number> (0);
+  ids = new ReplaySubject<number[]>();
+  page = new BehaviorSubject<number>(0);
   pages = new ReplaySubject<number[]>();
+  comments = new ReplaySubject<string>();
 
   getStories(a: number): Observable<Story[]> {
     return this.ids.pipe(
       mergeMap((q) =>
         forkJoin(
           ...q
-            .slice(a*20, (a*20)+20)
+            .slice(a * 20, a * 20 + 20)
             .map((i) =>
               this.http.get<Story>(
                 this.ROOT_URL + `item/${i}.json?print=pretty`
@@ -42,13 +43,12 @@ export class NewsService {
           ...story,
           vote: votes[story.id] ? votes[story.id] + story.score : story.score,
           isUpVoted: votes[story.id] === 1,
-          isDownVoted: votes[story.id] ===  -1
-
+          isDownVoted: votes[story.id] === -1,
         }))
       )
     );
   }
-
+  
   upVote(id: string) {
     const v = this.votes.value;
     const x = v[id];
@@ -64,23 +64,26 @@ export class NewsService {
   }
 
   range(start, end) {
-    return Array(end - start + 1).fill(0).map((_, idx) => start + idx);
+    return Array(end - start + 1)
+      .fill(0)
+      .map((_, idx) => start + idx);
   }
 
   setPage(page: number) {
     this.page.next(page);
   }
 
-
   constructor(public http: HttpClient) {
-    this.http.get<number[]>(this.ROOT_URL + "topstories.json?print=pretty").subscribe( (ids) => this.ids.next(ids) );
-    this.ids.subscribe( ids =>{ 
-      const pagecount = Math.ceil(ids.length/20);
-      const pages = this.range(0, pagecount-1);
+    this.http
+      .get<number[]>(this.ROOT_URL + "topstories.json?print=pretty")
+      .subscribe((ids) => this.ids.next(ids));
+    this.ids.subscribe((ids) => {
+      const pagecount = Math.ceil(ids.length / 20);
+      const pages = this.range(0, pagecount - 1);
       this.pages.next(pages);
     });
-    this.page.pipe(
-      mergeMap(page => this.getStories(page))
-     ).subscribe(stories => this.stories.next(stories));
+    this.page
+      .pipe(mergeMap((page) => this.getStories(page)))
+      .subscribe((stories) => this.stories.next(stories));
   }
 }
