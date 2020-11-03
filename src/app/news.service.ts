@@ -12,7 +12,7 @@ import { ReplaySubject } from "rxjs";
 export class NewsService {
   votes = new BehaviorSubject<{ [index: string]: number }>({});
 
-  readonly ROOT_URL = "https://hacker-news.firebaseio.com/v0/";
+  readonly ROOT_URL = "http://localhost:3000/";
 
   stories = new ReplaySubject<Story[]>();
   ids = new ReplaySubject<number[]>();
@@ -48,7 +48,7 @@ export class NewsService {
       )
     );
   }
-  
+
   upVote(id: string) {
     const v = this.votes.value;
     const x = v[id];
