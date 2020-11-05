@@ -36,6 +36,17 @@ export class NewsService {
     );
   }
 
+  loadVotes(a: number): Observable<{ [index: string]: number }> {
+    return this.ids.pipe(
+      mergeMap((i) =>
+        this.http.post<{ [index: string]: number }>(
+          this.ROOT_URL + `votes`,
+          i.slice(a * 20, a * 20 + 20)
+        )
+      )
+    );
+  }
+
   getVotes(): Observable<VotedStory[]> {
     return combineLatest(this.stories, this.votes).pipe(
       map(([stories, votes]) =>
@@ -53,14 +64,18 @@ export class NewsService {
     const v = this.votes.value;
     const x = v[id];
     v[id] = x === 1 ? undefined : 1;
+    const vote = x === 1 ? "resetvote" : "upvote";
     this.votes.next(v);
+    this.http.get(this.ROOT_URL + `item/${id}/${vote}`).subscribe();
   }
 
   downVote(id: string) {
     const v = this.votes.value;
     const x = v[id];
     v[id] = x === -1 ? undefined : -1;
+    const vote = x === -1 ? "resetvote" : "downvote";
     this.votes.next(v);
+    this.http.get(this.ROOT_URL + `item/${id}/${vote}`).subscribe();
   }
 
   range(start, end) {
@@ -85,5 +100,8 @@ export class NewsService {
     this.page
       .pipe(mergeMap((page) => this.getStories(page)))
       .subscribe((stories) => this.stories.next(stories));
+    this.page
+      .pipe(mergeMap((page) => this.loadVotes(page)))
+      .subscribe((votes) => this.votes.next(votes));
   }
 }
