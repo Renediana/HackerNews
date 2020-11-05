@@ -28,7 +28,7 @@ export class NewsService {
             .slice(a * 20, a * 20 + 20)
             .map((i) =>
               this.http.get<Story>(
-                this.ROOT_URL + `item/${i}.json?print=pretty`
+                this.ROOT_URL + `item/${i}.json?print=pretty`, {withCredentials: true}
               )
             )
         )
@@ -41,7 +41,7 @@ export class NewsService {
       mergeMap((i) =>
         this.http.post<{ [index: string]: number }>(
           this.ROOT_URL + `votes`,
-          i.slice(a * 20, a * 20 + 20)
+          i.slice(a * 20, a * 20 + 20), {withCredentials: true}
         )
       )
     );
@@ -66,7 +66,7 @@ export class NewsService {
     v[id] = x === 1 ? undefined : 1;
     const vote = x === 1 ? "resetvote" : "upvote";
     this.votes.next(v);
-    this.http.get(this.ROOT_URL + `item/${id}/${vote}`).subscribe();
+    this.http.get(this.ROOT_URL + `item/${id}/${vote}`, {withCredentials: true}).subscribe();
   }
 
   downVote(id: string) {
@@ -75,7 +75,7 @@ export class NewsService {
     v[id] = x === -1 ? undefined : -1;
     const vote = x === -1 ? "resetvote" : "downvote";
     this.votes.next(v);
-    this.http.get(this.ROOT_URL + `item/${id}/${vote}`).subscribe();
+    this.http.get(this.ROOT_URL + `item/${id}/${vote}`, {withCredentials: true}).subscribe();
   }
 
   range(start, end) {
@@ -90,7 +90,7 @@ export class NewsService {
 
   constructor(public http: HttpClient) {
     this.http
-      .get<number[]>(this.ROOT_URL + "topstories.json?print=pretty")
+      .get<number[]>(this.ROOT_URL + "topstories.json?print=pretty", {withCredentials: true})
       .subscribe((ids) => this.ids.next(ids));
     this.ids.subscribe((ids) => {
       const pagecount = Math.ceil(ids.length / 20);
