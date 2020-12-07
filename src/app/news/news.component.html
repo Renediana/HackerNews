@@ -1,0 +1,41 @@
+<div class="container-fluid">
+  <div class="row">
+    <div *ngFor="let story of stories | async" class="col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">
+            <a id="article-title" href="{{ story.url }}">{{ story.title }}</a>
+          </h5>
+          <div>
+            <span class="card-subtitle mb-2">Score: {{ story.vote }}</span>
+            <button
+              id="vote upVote"
+              (click)="upVote(story.id)"
+              class="btn card-link"
+              [class.isVoted]="story.isUpVoted"
+            >
+              <div id="Uvote">( ͡° ͜ʖ ͡°)</div>
+            </button>
+            <button
+              id="vote downVote"
+              (click)="downVote(story.id)"
+              class="btn card-link"
+              [class.isVoted]="story.isDownVoted"
+            >
+              <div id="Dvote">( ‾ ʖ̫ ‾)</div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="buttons">
+  <button
+    class="btn btn-outline-dark"
+    *ngFor="let page of pages | async"
+    [routerLink]="['./../', page + 1]"
+  >
+    {{ page + 1 }}
+  </button>
+</div>
