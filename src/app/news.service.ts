@@ -10,9 +10,9 @@ import { ReplaySubject } from "rxjs";
   providedIn: "root",
 })
 export class NewsService {
-  votes = new BehaviorSubject<{ [index: string]: number }>({});
+  votes = new BehaviorSubject<{ [index: string]: {myVote: number, total: number} }>({});
 
-  readonly ROOT_URL = "https://hacker-news.firebaseio.com/v0/";
+  readonly ROOT_URL = "https://bonenga.ddns.net/api/";
 
   stories = new ReplaySubject<Story[]>();
   ids = new ReplaySubject<number[]>();
@@ -28,9 +28,20 @@ export class NewsService {
             .slice(a * 20, a * 20 + 20)
             .map((i) =>
               this.http.get<Story>(
-                this.ROOT_URL + `item/${i}.json?print=pretty`
+                this.ROOT_URL + `item/${i}.json`, {withCredentials: true}
               )
             )
+        )
+      )
+    );
+  }
+
+  loadVotes(a: number): Observable<{ [index: string]: {myVote: number, total: number} }> {
+    return this.ids.pipe(
+      mergeMap((i) =>
+        this.http.post<{ [index: string]: {myVote: number, total: number} }>(
+          this.ROOT_URL + `votes`,
+          i.slice(a * 20, a * 20 + 20), {withCredentials: true}
         )
       )
     );
@@ -41,26 +52,38 @@ export class NewsService {
       map(([stories, votes]) =>
         stories.map<VotedStory>((story) => ({
           ...story,
-          vote: votes[story.id] ? votes[story.id] + story.score : story.score,
-          isUpVoted: votes[story.id] === 1,
-          isDownVoted: votes[story.id] === -1,
+          vote: votes[story.id] !== undefined ? votes[story.id].total + story.score : story.score,
+          isUpVoted: votes[story.id] !== undefined ? votes[story.id].myVote === 1 : false,
+          isDownVoted: votes[story.id] !== undefined ? votes[story.id].myVote === -1 : false,
         }))
       )
     );
   }
-  
+
   upVote(id: string) {
     const v = this.votes.value;
     const x = v[id];
-    v[id] = x === 1 ? undefined : 1;
+    const vote = x.myVote === 1 ? "resetvote" : "upvote";
+
+    v[id] = {
+      total: x.total + (x.myVote === undefined || x.myVote === -1 ? 1 : -1),
+      myVote: x.myVote === undefined ? 1 : undefined};
+
     this.votes.next(v);
+    this.http.get(this.ROOT_URL + `item/${id}/${vote}`, {withCredentials: true}).subscribe();
   }
 
   downVote(id: string) {
     const v = this.votes.value;
     const x = v[id];
-    v[id] = x === -1 ? undefined : -1;
+    const vote = x.myVote === 1 ? "resetvote" : "downvote";
+
+    v[id] = {
+      total: x.total + (x.myVote === undefined || x.myVote === 1 ? -1 : 1),
+      myVote: x.myVote === undefined ? -1 : undefined};
+
     this.votes.next(v);
+    this.http.get(this.ROOT_URL + `item/${id}/${vote}`, {withCredentials: true}).subscribe();
   }
 
   range(start, end) {
@@ -75,7 +98,7 @@ export class NewsService {
 
   constructor(public http: HttpClient) {
     this.http
-      .get<number[]>(this.ROOT_URL + "topstories.json?print=pretty")
+      .get<number[]>(this.ROOT_URL + "topstories.json", {withCredentials: true})
       .subscribe((ids) => this.ids.next(ids));
     this.ids.subscribe((ids) => {
       const pagecount = Math.ceil(ids.length / 20);
@@ -85,5 +108,8 @@ export class NewsService {
     this.page
       .pipe(mergeMap((page) => this.getStories(page)))
       .subscribe((stories) => this.stories.next(stories));
+    this.page
+      .pipe(mergeMap((page) => this.loadVotes(page)))
+      .subscribe((votes) => this.votes.next(votes));
   }
 }
