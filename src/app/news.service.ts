@@ -12,7 +12,7 @@ import { ReplaySubject } from "rxjs";
 export class NewsService {
   votes = new BehaviorSubject<{ [index: string]: {myVote: number, total: number} }>({});
 
-  readonly ROOT_URL = "http://localhost:3000/";
+  readonly ROOT_URL = "https://bonenga.ddns.net/api/";
 
   stories = new ReplaySubject<Story[]>();
   ids = new ReplaySubject<number[]>();
@@ -28,7 +28,7 @@ export class NewsService {
             .slice(a * 20, a * 20 + 20)
             .map((i) =>
               this.http.get<Story>(
-                this.ROOT_URL + `item/${i}.json?print=pretty`, {withCredentials: true}
+                this.ROOT_URL + `item/${i}.json`, {withCredentials: true}
               )
             )
         )
@@ -98,7 +98,7 @@ export class NewsService {
 
   constructor(public http: HttpClient) {
     this.http
-      .get<number[]>(this.ROOT_URL + "topstories.json?print=pretty", {withCredentials: true})
+      .get<number[]>(this.ROOT_URL + "topstories.json", {withCredentials: true})
       .subscribe((ids) => this.ids.next(ids));
     this.ids.subscribe((ids) => {
       const pagecount = Math.ceil(ids.length / 20);
