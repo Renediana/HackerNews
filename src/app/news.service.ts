@@ -11,7 +11,7 @@ import { ReplaySubject } from "rxjs";
 
 export class NewsService {
   
-  readonly ROOT_URL = "https://hacker-news.firebaseio.com/v0/";
+  readonly ROOT_URL = "http://bonenga.ddns.net:5000/";
 
   stories = new ReplaySubject<Story[]>();
   ids = new ReplaySubject<number[]>();
@@ -28,7 +28,7 @@ export class NewsService {
             .slice(a * 20, a * 20 + 20)
             .map((i) =>
               this.http.get<Story>(
-                this.ROOT_URL + `item/${i}.json?print=pretty`
+                this.ROOT_URL + `item/${i}.json`
               )
             )
         )
@@ -75,7 +75,7 @@ export class NewsService {
 
   constructor(public http: HttpClient) {
     this.http
-      .get<number[]>(this.ROOT_URL + "topstories.json?print=pretty")
+      .get<number[]>(this.ROOT_URL + "topstories.json")
       .subscribe((ids) => this.ids.next(ids));
     this.ids.subscribe((ids) => {
       const pagecount = Math.ceil(ids.length / 20);
