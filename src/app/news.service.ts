@@ -1,5 +1,4 @@
-import { NewsComponent } from "./news/news.component";
-import { flatMap, map, mergeMap } from "rxjs/operators";
+import { map, mergeMap } from "rxjs/operators";
 import { forkJoin, Observable, BehaviorSubject, combineLatest } from "rxjs";
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
@@ -9,9 +8,9 @@ import { ReplaySubject } from "rxjs";
 @Injectable({
   providedIn: "root",
 })
-export class NewsService {
-  votes = new BehaviorSubject<{ [index: string]: number }>({});
 
+export class NewsService {
+  
   readonly ROOT_URL = "https://hacker-news.firebaseio.com/v0/";
 
   stories = new ReplaySubject<Story[]>();
@@ -19,6 +18,7 @@ export class NewsService {
   page = new BehaviorSubject<number>(0);
   pages = new ReplaySubject<number[]>();
   comments = new ReplaySubject<string>();
+  votes = new BehaviorSubject<{ [index: string]: number }>({});
 
   getStories(a: number): Observable<Story[]> {
     return this.ids.pipe(
