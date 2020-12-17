@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+
+  hackernews.frontend:
+    container_name: hackernews-frontend
+    ports:
+      - "4200:80"
+    networks:
+      - hackernews
+
+networks:
+  hackernews:
+    name: hackernews

@@ -1,0 +1,9 @@
+version: "3.4"
+
+services:
+
+  hackernews.frontend:
+    image: ${DOCKER_REGISTRY-}hackernewsfrontend
+    build:
+      context: .
+      dockerfile: Dockerfile

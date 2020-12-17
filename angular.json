@@ -63,6 +63,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
+            "proxyConfig": "src/proxy.conf.json",
             "browserTarget": "HackerNews:build"
           },
           "configurations": {
@@ -118,8 +119,13 @@
               "devServerTarget": "HackerNews:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
-    }},
+    }
+  },
   "defaultProject": "HackerNews"
 }
